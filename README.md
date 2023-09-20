@@ -7,14 +7,15 @@ O projeto tem o intuito de ajudar o usuario com suas finanças pessoais, dessa f
 
 ## :books: Características
 
+* Selecionar a data em que o dinheiro movimentou;
 * Categorias de Ganho e Gasto;
 * Descrição dos items;
-* Separação dos Ganhos e Gastos de cada mês;
-* Balanço dos Ganhos e Gastos.
+* Separação dos ganhos e gastos ao decorer do mês;
+* Balanço dos ganhos e gastos por mês.
 
 ## :wrench: Tecnologias usadas
 
-<img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" /> <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" /> <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" />
+<img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" /> <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" />
 
 ## :handshake: Colaboradores 
 
