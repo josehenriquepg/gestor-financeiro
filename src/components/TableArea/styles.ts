@@ -5,7 +5,7 @@ export const Table = styled.table`
   padding: 20px;
   width: 100%;
   min-height: 250px;
-  background-color: #fbf5ef;
+  background-color: #fffefd;
   box-shadow: 0px 0px 5px #ccc; 
   border-radius: 10px;
 `;
