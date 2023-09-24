@@ -1,4 +1,5 @@
-import * as C from './styles';
+import { useState } from 'react';
+import { Table, TableHeadColumn } from './styles';
 import { Item } from '../../types/Item'
 import { TableItem } from '../TableItem';
 
@@ -9,21 +10,28 @@ type Props = {
 }
 
 export const TableArea = ({ list }: Props) => {
+  const [items, setItems] = useState<Item[]>(list);
+
+  const handleDeleteItem = (itemToDelete: Item) => {
+    const updatedItems = items.filter((item) => item !== itemToDelete);
+    setItems(updatedItems);
+  };
+
   return (
-    <C.Table>
+    <Table>
       <thead>
         <tr>
-          <C.TableHeadColumn width={100}><BsCalendar2EventFill /> Data </C.TableHeadColumn>
-          <C.TableHeadColumn width={130}><BsFillTagsFill /> Categoria </C.TableHeadColumn>
-          <C.TableHeadColumn><BsFileEarmarkTextFill /> Descrição </C.TableHeadColumn>
-          <C.TableHeadColumn width={150}><BsCashStack /> Valor </C.TableHeadColumn>
+          <TableHeadColumn width={100}><BsCalendar2EventFill /> Data </TableHeadColumn>
+          <TableHeadColumn width={130}><BsFillTagsFill /> Categoria </TableHeadColumn>
+          <TableHeadColumn><BsFileEarmarkTextFill /> Descrição </TableHeadColumn>
+          <TableHeadColumn width={150}><BsCashStack /> Valor </TableHeadColumn>
         </tr>
       </thead>
       <tbody>
         {list.map((item, index) =>(
-          <TableItem key={index} item={item} />
+          <TableItem key={index} item={item} onDelete={handleDeleteItem} />
         ))}
       </tbody>
-    </C.Table>
+    </Table>
   );
 }
