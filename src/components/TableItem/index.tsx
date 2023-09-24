@@ -3,18 +3,12 @@ import { Item } from '../../types/Item';
 import { formatDate } from '../../helpers/dateFilter';
 import { categories } from '../../data/categories';
 
-import { BsFillTrashFill } from 'react-icons/bs'
-
 type Props = {
   item: Item;
-  onDelete: (item: Item) => void
 }
 
-export const TableItem = ({ item, onDelete }: Props) => {
+export const TableItem = ({ item }: Props) => {
   const category = categories[item.category];
-  const handleDelete = () => {
-    onDelete(item);
-  };
 
   return (
     <TableLine>
@@ -29,9 +23,6 @@ export const TableItem = ({ item, onDelete }: Props) => {
         <Value color={category.expense ? '#ae2334' : '#239063'}>
         R$ {item.value}
         </Value>
-      </TableColumn>
-      <TableColumn>
-        <BsFillTrashFill onClick={handleDelete} />
       </TableColumn>
     </TableLine>
   );

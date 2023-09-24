@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Table, TableHeadColumn } from './styles';
 import { Item } from '../../types/Item'
 import { TableItem } from '../TableItem';
@@ -10,13 +9,6 @@ type Props = {
 }
 
 export const TableArea = ({ list }: Props) => {
-  const [items, setItems] = useState<Item[]>(list);
-
-  const handleDeleteItem = (itemToDelete: Item) => {
-    const updatedItems = items.filter((item) => item !== itemToDelete);
-    setItems(updatedItems);
-  };
-
   return (
     <Table>
       <thead>
@@ -29,7 +21,7 @@ export const TableArea = ({ list }: Props) => {
       </thead>
       <tbody>
         {list.map((item, index) =>(
-          <TableItem key={index} item={item} onDelete={handleDeleteItem} />
+          <TableItem key={index} item={item} />
         ))}
       </tbody>
     </Table>

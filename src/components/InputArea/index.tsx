@@ -20,12 +20,57 @@ export const InputArea = ({ onAdd }: Props) => {
     value: 0,
   });
 
+  const validateDate = (date: string) => {
+    return !isNaN(new Date(date).getTime());
+  };
+
+  const validateCategory = (category: string) => {
+    return categoryKeys.includes(category);
+  };
+
+  const validateDescription = (description: string) => {
+    return description !== '';
+  };
+
+  const validateValue = (value: number) => {
+    return value > 0;
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: name === 'value' ? parseFloat(value) : value,
     });
+  };
+
+  const handleAddEvent = () => {
+    const errors: string[] = [];
+
+    if (!validateDate(formData.date)) {
+      errors.push('Data inválida!');
+    }
+    if (!validateCategory(formData.category)) {
+      errors.push('Categoria inválida!');
+    }
+    if (!validateDescription(formData.description)) {
+      errors.push('Descrição vazia!');
+    }
+    if (!validateValue(formData.value)) {
+      errors.push('Valor inválido!');
+    }
+
+    if (errors.length > 0) {
+      alert(errors.join('\n'));
+    } else {
+      onAdd({
+        date: newDateAdjusted(formData.date),
+        category: formData.category,
+        description: formData.description,
+        value: formData.value,
+      });
+      clearFields();
+    }
   };
 
   const clearFields = () => {
@@ -36,34 +81,6 @@ export const InputArea = ({ onAdd }: Props) => {
       value: 0,
     });
   }
-
-  const handleAddEvent = () => {
-    let errors: string[] = [];
-
-    if(isNaN(new Date(formData.date).getTime())){
-      errors.push('Data inválida!');
-    }
-    if(!categoryKeys.includes(formData.category)){
-      errors.push('Categoria inválida!');
-    }
-    if(formData.description === '') {
-      errors.push('Descrição vazia!');
-    }
-    if(formData.value <= 0) {
-      errors.push('Valor inválido!');
-    }
-    if(errors.length > 0) {
-      alert(errors.join('\n'));
-    } else {
-      onAdd({
-        date: newDateAdjusted(formData.date),
-        category: formData.category,
-        description: formData.description,
-        value: formData.value
-      });
-      clearFields();
-    }
-  };
 
   return (
     <Container>
@@ -78,10 +95,7 @@ export const InputArea = ({ onAdd }: Props) => {
       </InputLabel>
       <InputLabel>
         <InputTitle><BsFillTagsFill /> Categoria </InputTitle>
-        <Select 
-          value={formData.category} 
-          onChange={handleInputChange}
-        >
+        <Select value={formData.category} onChange={handleInputChange} name="category">
           <option value=""></option>
           {categoryKeys.map((key, index) => (
             <option key={index} value={key}>
@@ -92,18 +106,22 @@ export const InputArea = ({ onAdd }: Props) => {
       </InputLabel>
       <InputLabel>
         <InputTitle><BsFileEarmarkTextFill /> Descrição </InputTitle>
-        <Input 
-          type="text" 
-          value={formData.description} 
-          onChange={handleInputChange} 
+        <Input
+          type="text"
+          name="description"
+          value={formData.description}
+          onChange={handleInputChange}
+          aria-label="Descrição"
         />
       </InputLabel>
       <InputLabel>
         <InputTitle><BsCashStack /> Valor </InputTitle>
-        <Input 
-          type="number" 
-          value={formData.value}  
-          onChange={handleInputChange} 
+        <Input
+          type="number"
+          name="value"
+          value={formData.value}
+          onChange={handleInputChange}
+          aria-label="Valor"
         />
       </InputLabel>
       <InputLabel>
