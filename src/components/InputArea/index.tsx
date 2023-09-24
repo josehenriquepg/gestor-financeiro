@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as C from './styles';
+import { Container, InputLabel, InputTitle, Input, Select, Button } from './styles';
 import { Item } from '../../types/Item';
 import { categories } from '../../data/categories';
 import { newDateAdjusted } from '../../helpers/dateFilter';
@@ -11,77 +11,105 @@ type Props = {
 }
 
 export const InputArea = ({ onAdd }: Props) => {
-  const [dateField, setDateField] = useState('');
-  const [categoryField, setCategoryField] = useState('');
-  const [descriptionField, setDescriptionField] = useState('');
-  const [valueField, setValueField] = useState(0);
+  const categoryKeys: string[] = Object.keys(categories);
 
-  let categoryKeys: string[] = Object.keys(categories);
+  const [formData, setFormData] = useState({
+    date: '',
+    category: '',
+    description: '',
+    value: 0,
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: name === 'value' ? parseFloat(value) : value,
+    });
+  };
+
+  const clearFields = () => {
+    setFormData({
+      date: '',
+      category: '',
+      description: '',
+      value: 0,
+    });
+  }
 
   const handleAddEvent = () => {
     let errors: string[] = [];
 
-    if(isNaN(new Date(dateField).getTime())){
+    if(isNaN(new Date(formData.date).getTime())){
       errors.push('Data inválida!');
     }
-    if(!categoryKeys.includes(categoryField)) {
+    if(!categoryKeys.includes(formData.category)){
       errors.push('Categoria inválida!');
     }
-    if(descriptionField === '') {
+    if(formData.description === '') {
       errors.push('Descrição vazia!');
     }
-    if(valueField <= 0) {
+    if(formData.value <= 0) {
       errors.push('Valor inválido!');
     }
     if(errors.length > 0) {
       alert(errors.join('\n'));
     } else {
       onAdd({
-        date: newDateAdjusted(dateField),
-        category: categoryField,
-        description: descriptionField,
-        value: valueField
+        date: newDateAdjusted(formData.date),
+        category: formData.category,
+        description: formData.description,
+        value: formData.value
       });
       clearFields();
     }
-  }
-  
-  const clearFields = () => {
-    setDateField('');
-    setCategoryField('');
-    setDescriptionField('');
-    setValueField(0);
-  }
+  };
 
   return (
-    <C.Container>
-      <C.InputLabel>
-        <C.InputTitle><BsCalendar2EventFill /> Data </C.InputTitle>
-        <C.Input type="date" value={dateField} onChange={e => setDateField(e.target.value)}/>
-      </C.InputLabel>
-      <C.InputLabel>
-        <C.InputTitle><BsFillTagsFill /> Categoria </C.InputTitle>
-        <C.Select value={categoryField} onChange={e => setCategoryField(e.target.value)}>
-          <>
-            <option></option>
-            {categoryKeys.map((key, index) => (
-              <option key={index} value={key}>{categories[key].name}</option>
-            ))}
-          </>
-        </C.Select>
-      </C.InputLabel>
-      <C.InputLabel>
-        <C.InputTitle><BsFileEarmarkTextFill /> Descrição </C.InputTitle>
-        <C.Input type="text" value={descriptionField} onChange={e => setDescriptionField(e.target.value)} />
-      </C.InputLabel>
-      <C.InputLabel>
-        <C.InputTitle><BsCashStack /> Valor </C.InputTitle>
-        <C.Input type="number" value={valueField} onChange={e => setValueField(parseFloat(e.target.value))} />
-      </C.InputLabel>
-      <C.InputLabel>
-        <C.InputTitle>&nbsp;</C.InputTitle>
-        <C.Button onClick={handleAddEvent}><BsPlusSquareFill /> Adicionar</C.Button>
-      </C.InputLabel>
-    </C.Container>
+    <Container>
+      <InputLabel>
+        <InputTitle><BsCalendar2EventFill /> Data </InputTitle>
+        <Input 
+          type="date" 
+          name="date"
+          value={formData.date} 
+          onChange={handleInputChange} 
+        />
+      </InputLabel>
+      <InputLabel>
+        <InputTitle><BsFillTagsFill /> Categoria </InputTitle>
+        <Select 
+          value={formData.category} 
+          onChange={handleInputChange}
+        >
+          <option value=""></option>
+          {categoryKeys.map((key, index) => (
+            <option key={index} value={key}>
+              {categories[key].name}
+            </option>
+          ))}
+        </Select>
+      </InputLabel>
+      <InputLabel>
+        <InputTitle><BsFileEarmarkTextFill /> Descrição </InputTitle>
+        <Input 
+          type="text" 
+          value={formData.description} 
+          onChange={handleInputChange} 
+        />
+      </InputLabel>
+      <InputLabel>
+        <InputTitle><BsCashStack /> Valor </InputTitle>
+        <Input 
+          type="number" 
+          value={formData.value}  
+          onChange={handleInputChange} 
+        />
+      </InputLabel>
+      <InputLabel>
+        <InputTitle>&nbsp;</InputTitle>
+        <Button onClick={handleAddEvent}><BsPlusSquareFill /> Adicionar</Button>
+      </InputLabel>
+    </Container>
   );
 }
